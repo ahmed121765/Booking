@@ -1,37 +1,85 @@
-# Booking System
+# Booking — Business Listing & Booking Platform
 
-A web platform for discovering and managing business listings. Visitors can browse listings by category and location, while listing owners can manage their listings and purchase packages through the platform.
+A feature-rich web application built with **Laravel** that enables users to discover business listings by category and location, while providing listing owners with tools to manage their listings, schedules, media, and subscription packages.
 
-## Features
+The platform includes a dedicated administration dashboard for managing platform content, users, permissions, listing approvals, featured listings, and payment-related workflows.
 
-- Browse listings and view detailed listing pages.
-- Organize listings by categories and locations.
-- User accounts with profile and password management.
-- Owner dashboard for managing listings, schedules, images, and videos.
-- Admin dashboard for managing listings, categories, locations, amenities, users, roles, and permissions.
-- Listing approval and featured-listing controls.
-- Package and subscription management.
-- Checkout and payment support with PayPal and Stripe.
-- Contact form for visitor inquiries.
-- Social sign-in support.
+## Overview
 
-## Tech Stack
+Booking is designed to bring visitors, listing owners, and administrators together in one centralized platform. It combines listing discovery, owner management tools, role-based access control, subscription packages, and online payment integrations in a structured web application.
 
-- **Backend:** PHP 8.1+, Laravel 10
-- **Frontend:** Blade, Tailwind CSS, Alpine.js
-- **Build Tool:** Vite
-- **Database:** MySQL or another database supported by Laravel
+## Key Features
+
+### Public Listing Platform
+- Browse business listings by category and location.
+- View detailed listing pages and available information.
+- Discover featured listings.
+- Submit inquiries through the contact form.
+
+### User Account Management
+- User registration and authentication.
+- Profile management and password updates.
+- Social sign-in integration.
+- Dedicated owner dashboard.
+
+### Listing Management
+- Create and manage business listings.
+- Manage listing schedules and related information.
+- Upload and manage listing images and videos.
+- Organize listings by categories, locations, and amenities.
+- Support listing approval workflows.
+- Control featured-listing status.
+
+### Administration Dashboard
+- Manage listings and listing submissions.
+- Manage categories, locations, and amenities.
+- Manage users and their access.
+- Manage roles and permissions.
+- Review and approve listings.
+- Control featured listings and platform content.
+
+### Packages & Payments
+- Manage listing packages and subscriptions.
+- Support checkout workflows.
+- Integrate PayPal and Stripe for online payments.
+- Configure payment credentials through environment settings.
+
+## Technology Stack
+
+| Technology | Purpose |
+|---|---|
+| PHP 8.1+ | Backend programming language |
+| Laravel 10 | Backend framework |
+| Blade | Server-rendered templates |
+| MySQL | Relational database |
+| Tailwind CSS | Utility-first styling |
+| Alpine.js | Lightweight frontend interactions |
+| Vite | Frontend asset development and bundling |
+| Composer | PHP dependency management |
+| npm | JavaScript dependency management |
+| PayPal & Stripe | Payment integrations |
+
+## Application Architecture
+
+The application follows Laravel's MVC (Model–View–Controller) architecture to separate application responsibilities.
+
+- **Models:** Represent application data and database interactions.
+- **Views:** Render the user interface using Blade templates.
+- **Controllers:** Handle incoming requests and coordinate application logic.
+- **Middleware:** Apply request filtering and access restrictions where configured.
+- **Authentication & Authorization:** Control access to protected areas according to the application's configuration.
 
 ## Requirements
 
-Make sure the following tools are installed:
+Before installing the application, make sure you have:
 
-- PHP 8.1 or later
-- Composer
-- Node.js and npm
-- MySQL or another Laravel-supported database
+- PHP 8.1 or later, compatible with the project's dependencies.
+- Composer.
+- Node.js and npm.
+- MySQL or another database supported by Laravel.
+- Git.
 
-## Installation
+## Getting Started
 
 ### 1. Clone the Repository
 
@@ -40,41 +88,46 @@ git clone <repository-url>
 cd <project-folder>
 ```
 
-Replace `<repository-url>` with your GitHub repository URL and `<project-folder>` with the project directory name.
+Replace the placeholders with your actual repository URL and project directory.
 
-### 2. Install PHP Dependencies
+### 2. Install Backend Dependencies
 
 ```bash
 composer install
 ```
 
-### 3. Create the Environment File
+### 3. Configure Environment Variables
 
-On macOS or Linux:
+Create your local environment file.
 
-```bash
-cp .env.example .env
-```
-
-On Windows Command Prompt:
+**Windows Command Prompt:**
 
 ```cmd
 copy .env.example .env
 ```
 
-### 4. Generate the Application Key
+**macOS / Linux:**
+
+```bash
+cp .env.example .env
+```
+
+Generate the application key:
 
 ```bash
 php artisan key:generate
 ```
 
-### 5. Configure the Environment
+### 4. Configure the Database
 
-Open the `.env` file and configure your database connection and other required settings.
-
-Example database configuration:
+Create a database for the project, then update the relevant values in `.env`.
 
 ```env
+APP_NAME="Booking"
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://127.0.0.1:8000
+
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
@@ -83,94 +136,106 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-Create the database before running the migrations. Update the values according to your local database configuration.
+Use the credentials configured for your local database. Never use development settings such as `APP_DEBUG=true` in a production environment.
 
-### 6. Run Database Migrations
+### 5. Run Database Migrations
 
 ```bash
 php artisan migrate
 ```
 
-If the project includes database seeders and requires initial data, run:
+If the repository includes seeders and they are required for initial data, run:
 
 ```bash
 php artisan db:seed
 ```
 
-Only run the seeders if they are configured for your project.
-
-### 7. Install Frontend Dependencies
+### 6. Install Frontend Dependencies
 
 ```bash
 npm install
-```
-
-Build the frontend assets:
-
-```bash
 npm run build
 ```
 
-### 8. Start the Development Server
+### 7. Start the Application
 
 ```bash
 php artisan serve
 ```
 
-Open the URL displayed in your terminal, usually:
+Visit:
 
-http://127.0.0.1:8000
+**http://127.0.0.1:8000**
 
-## Payment Configuration
-
-The platform supports PayPal and Stripe payment integration.
-
-To enable online payments:
-
-- Configure the required payment credentials.
-- Add the necessary environment variables to `.env`.
-- Configure the payment settings according to the application's implementation.
-- Use sandbox or test mode credentials during development.
-
-Never commit real API keys, passwords, or other sensitive credentials to the repository.
-
-## Development
-
-### Run the Frontend Development Server
-
-To run Vite with live asset updates:
+For frontend development with live asset updates, run the following command in a separate terminal:
 
 ```bash
 npm run dev
 ```
 
-Keep the Vite development server running in a separate terminal while developing.
+## Payment Integration
 
-### Run Application Tests
+The platform includes PayPal and Stripe payment support.
+
+To configure payment functionality:
+
+1. Obtain the required credentials from the relevant payment provider.
+2. Add the required environment variables to `.env`.
+3. Configure the payment settings according to the implementation.
+4. Test payment flows using the providers' sandbox or test environments before using live credentials.
+
+**Security note:** Never publish secret API keys, payment credentials, or production configuration in your GitHub repository.
+
+## Testing
+
+Run the Laravel test suite with:
 
 ```bash
 php artisan test
 ```
 
-### Clear Application Cache
+The available test coverage depends on the tests included in the repository.
 
-If you encounter cached configuration or route issues, run:
+## Useful Artisan Commands
+
+Clear cached application configuration and routes:
 
 ```bash
 php artisan optimize:clear
 ```
 
-## Security
+Inspect registered routes:
 
-- Never commit the `.env` file to the repository.
-- Keep API keys, passwords, and private credentials secure.
-- Use `.env.example` to document the required environment variables without exposing sensitive values.
-- Validate user input and apply appropriate authentication and authorization checks.
-- Use test credentials for payment integrations during development.
+```bash
+php artisan route:list
+```
 
-## License
+Build production frontend assets:
 
-Specify the license under which this project is distributed. If no license has been selected, add one before publishing the project for reuse.
+```bash
+npm run build
+```
+
+## Security Considerations
+
+- Keep `.env` out of version control.
+- Provide `.env.example` without real credentials.
+- Use appropriate authentication and authorization for protected operations.
+- Validate incoming data before processing it.
+- Protect payment workflows and verify payment results on the server side.
+- Disable debug mode in production.
+- Keep PHP and Composer dependencies updated.
+
+## Project Goals
+
+This project demonstrates practical Laravel development concepts, including:
+
+- Building a database-driven web application.
+- Organizing application code using MVC.
+- Implementing listing and content management workflows.
+- Managing user access and administrative permissions.
+- Integrating subscription and payment workflows.
+- Developing a structured dashboard for platform administration.
 
 ## Author
 
@@ -178,4 +243,8 @@ Specify the license under which this project is distributed. If no license has b
 
 Laravel Backend Developer | Computer Science Student
 
-GitHub: [ahmed121765](https://github.com/ahmed121765)
+- GitHub: [@ahmed121765](https://github.com/ahmed121765)
+
+---
+
+*Built with Laravel and PHP.*
