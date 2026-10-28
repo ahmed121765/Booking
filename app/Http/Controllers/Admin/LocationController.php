@@ -1,0 +1,106 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\DataTables\LocationDataTable;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Location\CreateLocationRequest;
+use App\Http\Requests\Admin\Location\UpdateLocationRequest;
+use App\Models\Location;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\View\View;
+
+class LocationController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware(['permission:listing index'])->only('index');
+        $this->middleware(['permission:listing create'])->only(['create', 'store', 'show']);
+        $this->middleware(['permission:listing update'])->only(['edit', 'update']);
+        $this->middleware(['permission:listing delete'])->only('destroy');
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    
+    public function index(LocationDataTable $dataTable, Request $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            return $dataTable->ajax();
+        }
+
+        return $dataTable->render('dashboard.locations.index');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(): View
+    {
+        return view('dashboard.locations.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(CreateLocationRequest $request)
+    {
+        Location::create([
+            'title' => $request->title,
+            'slug' => Str::slug($request->title),
+            'status' => $request->status,
+            'show_at_home' => $request->show_at_home,
+            'notes' => $request->notes,
+        ]);
+        return to_route('admin.locations.index')
+            ->with('success', 'created successfully.');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $location = Location::findOrFail($id);
+        return view('dashboard.locations.show', compact('location'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $location = Location::findOrFail($id);
+        return view('dashboard.locations.edit', compact('location'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateLocationRequest $request, string $id)
+    {
+        $location = Location::findOrFail($id);
+        $location->update([
+            'title' => $request->title,
+            'slug' => Str::slug($request->title),
+            'status' => $request->status,
+            'show_at_home' => $request->show_at_home,
+            'notes' => $request->notes,
+        ]);
+        return to_route('admin.locations.index')
+            ->with('success', 'updated successfully.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        $location = Location::findOrFail($id);
+        $location->delete();
+        return to_route('admin.locations.index')
+            ->with('success', 'deleted successfully.');
+    }
+}
